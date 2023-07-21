@@ -39,13 +39,13 @@ async function postBookings (userId: number, roomId: number){
 
     const booking = await bookingRepository.postBookings(roomId, userId);
 
-    return booking;
+    return booking.id;
 };
 
 async function updateBookings(userId: number, roomId: number, bookingId: number){
     const bookingExists = await bookingRepository.getBookings(bookingId);
     if(!bookingExists){
-        throw notFoundError();
+        throw conflictError("No booking found");
     };
 
     const roomExists = await bookingRepository.findRoom(roomId);
@@ -60,7 +60,7 @@ async function updateBookings(userId: number, roomId: number, bookingId: number)
 
     const bookingUpdated = await bookingRepository.updateBookings(roomId, bookingId);
 
-    return bookingUpdated;
+    return bookingUpdated.id;
 };
 
 const bookingService = {
