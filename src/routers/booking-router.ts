@@ -1,4 +1,4 @@
-import { getBookings, postBookings } from "@/controllers/booking-controller";
+import { getBookings, postBookings, updateBookings } from "@/controllers/booking-controller";
 import { authenticateToken } from "@/middlewares";
 import { Router } from "express";
 
@@ -8,7 +8,7 @@ bookingRouter
     .all('/*', authenticateToken)
     .get('/', getBookings)
     .post('/', postBookings)
-    .put('/:bookingId')
+    .put('/:bookingId', updateBookings)
 
 export { 
     bookingRouter
