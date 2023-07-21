@@ -42,9 +42,31 @@ async function postBookings (userId: number, roomId: number){
     return booking;
 };
 
+async function updateBookings(userId: number, roomId: number, bookingId: number){
+    const bookingExists = await bookingRepository.getBookings(bookingId);
+    if(!bookingExists){
+        throw notFoundError();
+    };
+
+    const roomExists = await bookingRepository.findRoom(roomId);
+    if (!roomExists){
+        throw notFoundError();
+    };
+
+    const vacancies = await bookingRepository.checkVacancies(roomId);
+    if(vacancies.length >= roomExists.capacity) {
+        throw conflictError("This room has no more spaces available, please select another one.");
+    };
+
+    const bookingUpdated = await bookingRepository.updateBookings(roomId, bookingId);
+
+    return bookingUpdated;
+};
+
 const bookingService = {
     getBookings,
-    postBookings
+    postBookings,
+    updateBookings
 };
 
 export default bookingService;

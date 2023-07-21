@@ -44,12 +44,24 @@ async function checkVacancies(roomId: number){
     });
 };
 
+async function updateBookings(roomId: number, bookingId: number){
+    return prisma.booking.update({
+        where: {
+            id: bookingId
+        },
+        data: {
+            roomId
+        }
+    })
+};
+
 const bookingRepository = {
     getBookings,
     findMyBooking,
     postBookings,
     findRoom,
-    checkVacancies
+    checkVacancies,
+    updateBookings
 };
 
 export default bookingRepository;
